@@ -1,5 +1,5 @@
 class Place
-
+  include ActiveModel::Model
   attr_accessor :id, :formatted_address, :location, :address_components
 
   def initialize(hash)
@@ -7,6 +7,10 @@ class Place
     @address_components = hash[:address_components].map { |a| AddressComponent.new(a) } if hash[:address_components]
     @formatted_address = hash[:formatted_address]
     @location = Point.new(hash[:geometry][:geolocation])
+  end
+
+  def persisted?
+    !@id.nil?
   end
 
   def self.mongo_client
